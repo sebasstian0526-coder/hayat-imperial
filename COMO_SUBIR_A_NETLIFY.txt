@@ -1,0 +1,76 @@
+COMO SUBIR ESTA WEB A NETLIFY (GRATIS)
+====================================================
+
+La web moderna de Hayat Imperial está en esta carpeta
+(hayat-imperial). Es un proyecto Next.js con React,
+Tailwind CSS y componentes shadcn/ui.
+
+Para publicarla en Netlify:
+
+PASO 1 - CREAR UN REPOSITORIO EN GITHUB
+----------------------------------------------------
+1. Entra a github.com y crea una cuenta si no tienes.
+2. Clic en el signo "+" (arriba a la derecha) -> "New repository".
+3. Nombre: hayat-imperial
+4. Dejalo en Publico y clic en "Create repository".
+5. NO marques nada mas (no inicies con README).
+
+PASO 2 - SUBIR ESTA CARPETA A GITHUB
+----------------------------------------------------
+Abre una terminal en esta carpeta (hayat-imperial) y escribe:
+
+git init
+git add .
+git commit -m "Web moderna de Hayat Imperial"
+git branch -M main
+git remote add origin https://github.com/TU_USUARIO/hayat-imperial.git
+git push -u origin main
+
+(Cambia TU_USUARIO por tu nombre de usuario de GitHub)
+
+PASO 3 - CONECTAR NETLIFY
+----------------------------------------------------
+1. Entra a app.netlify.com y crea cuenta (puedes usar GitHub).
+2. Clic en "Add new site" -> "Import an existing project".
+3. Conecta tu cuenta de GitHub y elige el repo hayat-imperial.
+4. Netlify detecta Next.js automaticamente.
+   Dejar los valores por defecto:
+   - Build command: npm run build
+   - Publish directory: .next
+5. Clic en "Deploy site". Espera 1-2 minutos.
+6. Cuando termine te da un dominio tipo tuaweb.netlify.app
+
+PASO 4 - USAR TU PROPIO DOMINIO (opcional)
+----------------------------------------------------
+En Netlify: Site configuration -> Domain management ->
+Add custom domain. Sigue los pasos para apuntar tu dominio
+(HayatImperial.com o el que tengas) con los DNS que te da
+Netlify.
+
+PASO 5 - ACTUALIZAR LA WEB CUANDO CAMBIES PRODUCTOS
+----------------------------------------------------
+Cada vez que cambies productos.json, fotos o precios:
+1. Edita los archivos en esta carpeta.
+2. En la terminal:
+   git add .
+   git commit -m "Actualice catalogo"
+   git push
+3. Netlify se actualiza solo en 1-2 minutos.
+
+COMO VERLA EN TU COMPUTADORA ANTES DE SUBIR
+----------------------------------------------------
+En esta misma carpeta, abre una terminal y ejecuta:
+
+npm run dev
+
+Se abre en http://localhost:3000
+
+DONDE ESTAN LOS ARCHIVOS IMPORTANTES
+----------------------------------------------------
+- lib/productos.json  -> el catalogo (371 perfumes)
+- public/img          -> las fotos de los perfumes
+- app/page.tsx        -> la pagina principal
+- app/layout.tsx      -> el diseño de toda la pagina
+- components/         -> todas las partes de la pagina
+- lib/carrito.tsx     -> la logica del carrito
+- lib/productos.ts    -> precios, busqueda y WhatsApp
