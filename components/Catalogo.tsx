@@ -16,42 +16,40 @@ const categorias = [
 
 type Categoria = (typeof categorias)[number]["id"];
 
+function esCategoria(s: string): s is Categoria {
+  return s === "todos" || s === "caballero" || s === "dama" || s === "unisex";
+}
+
 const LIMITE_PAG = 24;
 
 export default function Catalogo() {
-  const { busqueda, seccion, setBusqueda } = useEstadoShop();
-  const [categoria, setCategoria] = useState<Categoria>("todos");
+  const { busqueda, seccion, setBusqueda, setSeccion } = useEstadoShop();
   const [marca, setMarca] = useState<string | null>(null);
   const [orden, setOrden] = useState<"defecto" | "menor" | "mayor">("defecto");
   const [visibles, setVisibles] = useState(LIMITE_PAG);
 
   const marcasLista = useMemo(() => marcas(), []);
 
+  const categoria: Categoria = esCategoria(seccion) ? seccion : "todos";
+
   const lista = useMemo(() => {
-    const act =
-      seccion === "caballero" || seccion === "dama" || seccion === "unisex" || seccion === "todos"
-        ? (seccion as Categoria)
-        : categoria;
-    const base = buscarProductos({ categoria: act, marca, q: busqueda });
+    const base = buscarProductos({ categoria, marca, q: busqueda });
     if (orden === "menor") base.sort((a, b) => (a.precio ?? 0) - (b.precio ?? 0));
     if (orden === "mayor") base.sort((a, b) => (b.precio ?? 0) - (a.precio ?? 0));
     return base;
-  }, [categoria, marca, orden, busqueda, seccion]);
+  }, [categoria, marca, orden, busqueda]);
 
   const visiblesAhora = lista.slice(0, visibles);
 
   const reiniciar = () => {
     setVisibles(LIMITE_PAG);
-    setCategoria("todos");
+    setSeccion("todos");
     setMarca(null);
     setBusqueda("");
   };
 
   const usarChips = seccion === "marcas";
-  const tipoActivo: Categoria =
-    seccion === "caballero" || seccion === "dama" || seccion === "unisex" || seccion === "todos"
-      ? (seccion as Categoria)
-      : categoria;
+  const tipoActivo: Categoria = categoria;
 
   return (
     <section id="catalogo" className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
@@ -61,7 +59,7 @@ export default function Catalogo() {
             <button
               key={c.id}
               onClick={() => {
-                setCategoria(c.id);
+                setSeccion(c.id);
                 setVisibles(LIMITE_PAG);
               }}
               className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${

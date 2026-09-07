@@ -21,7 +21,7 @@ export default function Hero() {
         aria-hidden
         style={{
           background:
-            "radial-gradient(ellipse 80% 60% at 50% -10%, rgba(212,161,92,0.20), transparent 60%), radial-gradient(ellipse 50% 40% at 85% 20%, rgba(212,161,92,0.12), transparent 55%), radial-gradient(ellipse 50% 40% at 10% 30%, rgba(212,161,92,0.09), transparent 55%)",
+            "radial-gradient(ellipse 80% 55% at 50% -10%, rgba(212,161,92,0.08), transparent 60%), radial-gradient(ellipse 50% 40% at 85% 20%, rgba(212,161,92,0.05), transparent 55%), radial-gradient(ellipse 50% 40% at 10% 30%, rgba(212,161,92,0.04), transparent 55%)",
         }}
       />
 

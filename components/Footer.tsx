@@ -1,6 +1,6 @@
 "use client";
 
-import { MessageCircle, MapPin, HelpCircle } from "lucide-react";
+import { MessageCircle, MapPin, HelpCircle, Lock } from "lucide-react";
 import Link from "next/link";
 import { WHATSAPP } from "@/lib/productos";
 
@@ -46,6 +46,11 @@ export default function Footer() {
             </li>
             <li><Link href="/terminos-y-condiciones" className="hover:text-foreground">Términos y condiciones</Link></li>
             <li><Link href="/politica-de-privacidad" className="hover:text-foreground">Política de privacidad</Link></li>
+            <li>
+              <Link href="/admin" className="inline-flex items-center gap-1.5 text-muted-foreground/70 hover:text-foreground">
+                <Lock className="h-3 w-3" /> Panel admin
+              </Link>
+            </li>
           </ul>
         </div>
 

@@ -8,6 +8,7 @@ interface EstadoShop {
   busqueda: string;
   seccion: string;
   setBusqueda: (q: string) => void;
+  setSeccion: (id: string) => void;
   irSeccion: (id: string) => void;
 }
 
@@ -74,7 +75,7 @@ export function EstadoShopProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <EstadoContext.Provider value={{ busqueda, seccion, setBusqueda, irSeccion }}>
+    <EstadoContext.Provider value={{ busqueda, seccion, setBusqueda, setSeccion, irSeccion }}>
       {children}
     </EstadoContext.Provider>
   );
