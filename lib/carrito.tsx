@@ -1,7 +1,9 @@
 ﻿"use client";
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import type { ReactNode } from "react";
+import { CheckCircle2 } from "lucide-react";
 import type { Producto } from "./tipos";
 import { WHATSAPP, formatearPrecio } from "./productos";
 
@@ -41,6 +43,8 @@ export function CarritoProvider({ children }: { children: ReactNode }) {
     }
   });
   const [abierto, setAbierto] = useState(false);
+  const [toast, setToast] = useState<string | null>(null);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     try {
@@ -50,16 +54,25 @@ export function CarritoProvider({ children }: { children: ReactNode }) {
     }
   }, [items]);
 
-  const agregar = useCallback((p: Producto) => {
-    setItems((prev) => {
-      const existe = prev.find((i) => i.id === p.id);
-      if (existe) {
-        return prev.map((i) => (i.id === p.id ? { ...i, cantidad: i.cantidad + 1 } : i));
-      }
-      return [...prev, { id: p.id, nombre: p.nombre, img: p.img, precio: p.precio, cantidad: 1 }];
-    });
-    setAbierto(true);
+  const mostrarToast = useCallback((titulo: string) => {
+    setToast(titulo);
+    if (timer.current) clearTimeout(timer.current);
+    timer.current = setTimeout(() => setToast(null), 2600);
   }, []);
+
+  const agregar = useCallback(
+    (p: Producto) => {
+      setItems((prev) => {
+        const existe = prev.find((i) => i.id === p.id);
+        if (existe) {
+          return prev.map((i) => (i.id === p.id ? { ...i, cantidad: i.cantidad + 1 } : i));
+        }
+        return [...prev, { id: p.id, nombre: p.nombre, img: p.img, precio: p.precio, cantidad: 1 }];
+      });
+      mostrarToast(p.nombre);
+    },
+    [mostrarToast]
+  );
 
   const quitar = useCallback((id: string) => {
     setItems((prev) => prev.filter((i) => i.id !== id));
@@ -97,7 +110,38 @@ export function CarritoProvider({ children }: { children: ReactNode }) {
     [items, abierto, agregar, quitar, cambiarCantidad, limpiar, total, conteo]
   );
 
-  return <CarritoContext.Provider value={valor}>{children}</CarritoContext.Provider>;
+  return (
+    <CarritoContext.Provider value={valor}>
+      {children}
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            key="toast-carrito"
+            initial={{ opacity: 0, y: 24, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 24, scale: 0.95 }}
+            transition={{ type: "spring", damping: 24, stiffness: 320 }}
+            className="fixed bottom-6 left-1/2 z-[80] flex w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-2xl"
+            role="status"
+          >
+            <span className="shrink-0 rounded-full bg-green-500/15 p-2 text-green-600">
+              <CheckCircle2 className="h-5 w-5" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-bold">Perfume añadido al carrito</p>
+              <p className="truncate text-xs text-muted-foreground">{toast}</p>
+            </div>
+            <button
+              onClick={() => setAbierto(true)}
+              className="shrink-0 rounded-full bg-foreground px-3 py-1.5 text-xs font-semibold text-background hover:bg-primary hover:text-primary-foreground"
+            >
+              Ver carrito
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </CarritoContext.Provider>
+  );
 }
 
 export function useCarrito(): CarritoContextValue {
@@ -108,16 +152,16 @@ export function useCarrito(): CarritoContextValue {
 
 export function textoPedidoWhatsApp(items: ItemCarrito[], total: number): string {
   const lineas = items.map(
-    (i) => `â€¢ ${i.nombre}\n   Cantidad: ${i.cantidad} x ${formatearPrecio(i.precio)}`
+    (i) => `• ${i.nombre}\n   Cantidad: ${i.cantidad} x ${formatearPrecio(i.precio)}`
   );
   const cuerpo = [
-    "Â¡Hola! Vengo de la pÃ¡gina de Hayat Imperial ðŸŒ¹ y quiero hacer un pedido:",
+    "¡Hola! Vengo de la página de Hayat Imperial 🌹 y quiero hacer un pedido:",
     "",
     ...lineas,
     "",
-    `ðŸ’µ *Total: ${formatearPrecio(total)}*`,
+    `💵 *Total: ${formatearPrecio(total)}*`,
     "",
-    "Â¿EstÃ¡ disponible? Â¡Gracias!",
+    "¿Está disponible? ¡Gracias!",
   ].join("\n");
   return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(cuerpo)}`;
 }

@@ -139,7 +139,7 @@ export default function Catalogo() {
           <SearchX className="h-10 w-10 text-muted-foreground" />
           <p className="font-heading text-lg">No encontramos fragancias</p>
           <p className="text-sm text-muted-foreground">
-            ProbÃ¡ con otra palabra o limpiÃ¡ los filtros.
+            Probá con otra palabra o limpiá los filtros.
           </p>
           <button
             onClick={reiniciar}
@@ -168,7 +168,7 @@ export default function Catalogo() {
                 onClick={() => setVisibles((v) => v + LIMITE_PAG)}
                 className="rounded-full border border-border px-8 py-3 text-sm font-semibold transition-colors hover:bg-muted"
               >
-                Ver mÃ¡s ({lista.length - visibles} restantes)
+                Ver más ({lista.length - visibles} restantes)
               </button>
             </div>
           )}

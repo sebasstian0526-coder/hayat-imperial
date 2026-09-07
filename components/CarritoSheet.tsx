@@ -53,9 +53,9 @@ export default function CarritoSheet() {
             {items.length === 0 ? (
               <div className="flex flex-1 flex-col items-center justify-center gap-4 p-8 text-center">
                 <ShoppingCart className="h-12 w-12 text-muted-foreground/40" />
-                <p className="font-heading text-base">Tu carrito estÃ¡ vacÃ­o</p>
+                <p className="font-heading text-base">Tu carrito está vacío</p>
                 <p className="text-sm text-muted-foreground">
-                  ExplorÃ¡ nuestra colecciÃ³n y agregÃ¡ tus favoritos.
+                  Explorá nuestra colección y agregá tus favoritos.
                 </p>
                 <button
                   onClick={cerrarCarrito}
@@ -106,7 +106,7 @@ export default function CarritoSheet() {
                             <button
                               onClick={() => cambiarCantidad(item.id, 1)}
                               className="rounded-full p-1 hover:bg-muted"
-                              aria-label="MÃ¡s"
+                              aria-label="Más"
                             >
                               <Plus className="h-3 w-3" />
                             </button>

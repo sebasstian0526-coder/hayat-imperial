@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import CarritoSheet from "@/components/CarritoSheet";
 import Footer from "@/components/Footer";
+import { FondoAnimado } from "@/components/FondoAnimado";
 import { CarritoProvider } from "@/lib/carrito";
 import { EstadoShopProvider } from "@/lib/estado";
 
@@ -37,6 +38,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} h-full antialiased`}
     >
       <body className="font-sans min-h-full">
+        <FondoAnimado />
         <CarritoProvider>
           <EstadoShopProvider>
             <Navbar />

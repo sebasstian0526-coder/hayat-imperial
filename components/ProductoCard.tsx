@@ -33,10 +33,31 @@ export default function ProductoCard({ p, i }: { p: Producto; i: number }) {
     >
       <div className="relative aspect-square overflow-hidden bg-muted">
         {errorImg || !p.img ? (
-          <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-muted to-card p-4 text-center">
-            <span className="font-heading text-lg font-semibold leading-tight">{p.nombre}</span>
-            <span className="text-[11px] uppercase tracking-widest text-muted-foreground">
-              Original
+          <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-gradient-to-br from-primary/10 via-muted to-card">
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(circle at 30% 20%, rgba(212,161,92,0.18), transparent 45%), radial-gradient(circle at 75% 80%, rgba(212,161,92,0.14), transparent 45%)",
+              }}
+            />
+            <svg
+              viewBox="0 0 48 48"
+              className="relative h-16 w-16 text-primary/40"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
+            >
+              <rect x="16.5" y="8" width="15" height="32" rx="4" />
+              <path d="M21 8v-2a3 3 0 0 1 6 0v2" />
+              <circle cx="24" cy="32" r="1.5" fill="currentColor" stroke="none" />
+              <path d="M20 13h8" />
+            </svg>
+            <span className="absolute bottom-3 left-1/2 w-full -translate-x-1/2 px-4 text-center font-heading text-xs font-semibold leading-tight">
+              {p.nombre}
             </span>
           </div>
         ) : (
@@ -74,7 +95,7 @@ export default function ProductoCard({ p, i }: { p: Producto; i: number }) {
             aria-label={`Agregar ${p.nombre} al carrito`}
           >
             <ShoppingBag className="h-3.5 w-3.5" />
-            AÃ±adir
+            Añadir
           </motion.button>
         </div>
       </div>

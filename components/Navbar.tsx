@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { Search, ShoppingBag, X, Menu } from "lucide-react";
 import { useCarrito } from "@/lib/carrito";
@@ -9,6 +10,7 @@ import { useEstadoShop } from "@/lib/estado";
 export default function Navbar() {
   const { conteo, abrirCarrito } = useCarrito();
   const { setBusqueda, irSeccion } = useEstadoShop();
+  const router = useRouter();
   const [q, setQ] = useState("");
   const [busquedaActiva, setBusquedaActiva] = useState(false);
   const [menuAbierto, setMenuAbierto] = useState(false);
@@ -25,18 +27,23 @@ export default function Navbar() {
     if (busquedaActiva) inputRef.current?.focus();
   }, [busquedaActiva]);
 
-  const secciones = [
+const secciones = [
     { id: "inicio", label: "Inicio" },
     { id: "marcas", label: "Marcas" },
     { id: "caballero", label: "Caballero" },
     { id: "dama", label: "Dama" },
     { id: "unisex", label: "Unisex" },
+    { id: "faq", label: "FAQ", pag: "/faq" },
     { id: "contacto", label: "Contacto" },
   ];
 
-  const ir = (id: string) => {
+  const ir = (id: string, pag?: string) => {
     setMenuAbierto(false);
     setBusquedaActiva(false);
+    if (pag) {
+      router.push(pag);
+      return;
+    }
     irSeccion(id);
   };
 
@@ -50,7 +57,7 @@ export default function Navbar() {
         <button
           className="rounded-md p-2 hover:bg-muted md:hidden"
           onClick={() => setMenuAbierto((v) => !v)}
-          aria-label="MenÃº"
+          aria-label="Menú"
         >
           <Menu className="h-5 w-5" />
         </button>
@@ -68,10 +75,10 @@ export default function Navbar() {
         </button>
 
         <nav className="hidden md:flex flex-1 items-center justify-center gap-7">
-          {secciones.map((s) => (
+{secciones.map((s) => (
             <button
               key={s.id}
-              onClick={() => ir(s.id)}
+              onClick={() => ir(s.id, s.pag)}
               className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               {s.label}
@@ -155,10 +162,10 @@ export default function Navbar() {
             exit={{ opacity: 0, y: -8 }}
             className="border-t border-border/50 bg-background/95 backdrop-blur-xl md:hidden"
           >
-            {secciones.map((s) => (
+{secciones.map((s) => (
               <button
                 key={s.id}
-                onClick={() => ir(s.id)}
+                onClick={() => ir(s.id, s.pag)}
                 className="block w-full px-6 py-3 text-left text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
               >
                 {s.label}
